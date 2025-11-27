@@ -136,7 +136,8 @@ public abstract class Sala {
             return this;
         }
         
-        public SalaBuilder comHoriarioDisp (String horarioDisp){
+        // parte mafe
+        public SalaBuilder comHorarioDisp (String horarioDisp){
             salaInstance.setHorarioDisp(horarioDisp);
             return this;
         }
