@@ -11,7 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SalaDAO {
+// parte mafe
+public class SalaDAO implements InterfaceSalaDAO {
 
     public static Connection getConexao() throws ClassNotFoundException, SQLException {
         return Conexao.getConexaoMySQL();
@@ -31,30 +32,34 @@ public class SalaDAO {
         }
     }
     
+    // parte mafe
+    @Override
     public Sala consultaPorId(int idSala) throws ClassNotFoundException, SQLException {
-    Sala sala = null;
-    Connection con = getConexao();
-    PreparedStatement ps = con.prepareStatement("SELECT * FROM Sala WHERE idSala = ?");
-    ps.setInt(1, idSala);
-    ResultSet rs = ps.executeQuery();
-    if (rs.next()) {
-        // parte mafe
-        sala = instanciaSalaPorTipo(rs.getString("tipo"));
-        sala.setId(rs.getInt("idSala"));
-        sala.setNome(rs.getString("nome"));
-        sala.setCapacidade(rs.getInt("capacidade"));
-        sala.setPredio(rs.getString("predio"));
-        sala.setAndar(rs.getInt("andar"));
-        sala.setNumero(rs.getInt("numero"));
-        // parte mafe
-        // sala.setTipo(rs.getString("tipo")); // Removido pois é read-only via classe
-        sala.setStatus(rs.getBoolean("status"));
-        sala.setHorarioDisp(rs.getString("horarioDisp"));
+        Sala sala = null;
+        Connection con = getConexao();
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM Sala WHERE idSala = ?");
+        ps.setInt(1, idSala);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            // parte mafe
+            sala = instanciaSalaPorTipo(rs.getString("tipo"));
+            sala.setId(rs.getInt("idSala"));
+            sala.setNome(rs.getString("nome"));
+            sala.setCapacidade(rs.getInt("capacidade"));
+            sala.setPredio(rs.getString("predio"));
+            sala.setAndar(rs.getInt("andar"));
+            sala.setNumero(rs.getInt("numero"));
+            // parte mafe
+            // sala.setTipo(rs.getString("tipo")); // Removido pois é read-only via classe
+            sala.setStatus(rs.getBoolean("status"));
+            sala.setHorarioDisp(rs.getString("horarioDisp"));
+        }
+        con.close();
+        return sala;
     }
-    con.close();
-    return sala;
-}
 
+    // parte mafe
+    @Override
     public List<Sala> consultaTudo() throws ClassNotFoundException, SQLException {
         List<Sala> lista = new ArrayList<>();
         Connection con = getConexao();

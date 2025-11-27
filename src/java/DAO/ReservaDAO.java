@@ -13,12 +13,15 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservaDAO {
+// parte mafe
+public class ReservaDAO implements InterfaceReservaDAO {
 
     public static Connection getConexao() throws ClassNotFoundException, SQLException {
         return Conexao.getConexaoMySQL();
     }
 
+    // parte mafe
+    @Override
     public void cadastro(Reserva res) throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
@@ -36,6 +39,8 @@ public class ReservaDAO {
         con.close();
     }
     
+    // parte mafe
+    @Override
     public void atualiza(Reserva res) throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
@@ -53,6 +58,8 @@ public class ReservaDAO {
         con.close();
     }
 
+    // parte mafe
+    @Override
     public void deleta(Reserva res) throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
@@ -63,6 +70,8 @@ public class ReservaDAO {
         con.close();
     }
 
+    // parte mafe
+    @Override
     public List<Reserva> reservasPorSalaData(int idSala, java.time.LocalDate data) throws ClassNotFoundException, SQLException {
         List<Reserva> reservas = new ArrayList<>();
         Connection con = getConexao();
@@ -84,7 +93,7 @@ public class ReservaDAO {
             
             Usuario usu = new Usuario();
             usu.setIdUsuario(rs.getInt("idUsuario"));
-            // Parte Mafe - Correção: atribuindo usuário corretamente (no seu código original estava repetindo setSala)
+            // Parte Mafe - Correção: atribuindo usuário corretamente
             r.setIdUsuario(usu);
             
             r.setData(rs.getDate("data").toLocalDate());
@@ -98,7 +107,8 @@ public class ReservaDAO {
         return reservas;
     }
     
-    // Método antigo (pode manter se usar em outros lugares, mas cuidado com duplicidade de lógica)
+    // parte mafe
+    @Override
     public List<Reserva> reservasPorUsuario(int idUsuario) throws ClassNotFoundException, SQLException {
         List<Reserva> reservas = new ArrayList<>();
         Connection con = getConexao();
@@ -133,7 +143,8 @@ public class ReservaDAO {
         return reservas;
     }
     
-    // Parte Mafe - Método utilizado pela Action ConsultarReservaAction
+    // parte mafe
+    @Override
     public List<Reserva> consultarPorUsuario(int idUsuario) throws ClassNotFoundException, SQLException {
         List<Reserva> reservas = new ArrayList<>();
         Connection con = getConexao();
@@ -148,7 +159,6 @@ public class ReservaDAO {
             r.setIdReserva(rs.getInt("idReserva"));
             
             // Parte Mafe - Correção do erro "Sala is abstract"
-            // Usamos SalaPadrao como container temporário para o ID da sala
             Sala sala = new SalaPadrao(); 
             sala.setId(rs.getInt("idSala"));
             r.setIdSala(sala);
