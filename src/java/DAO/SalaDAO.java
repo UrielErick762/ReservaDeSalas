@@ -1,7 +1,6 @@
 package DAO;
 
 import Entity.Sala;
-// parte mafe
 import Entity.SalaLaboratorio;
 import Entity.SalaPadrao;
 import java.sql.Connection;
@@ -11,14 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-// parte mafe
 public class SalaDAO implements InterfaceSalaDAO {
 
     public static Connection getConexao() throws ClassNotFoundException, SQLException {
         return Conexao.getConexaoMySQL();
     }
     
-    // parte mafe
     private Sala instanciaSalaPorTipo(String tipo){
         if (tipo == null){ 
             return new SalaPadrao();
@@ -32,7 +29,6 @@ public class SalaDAO implements InterfaceSalaDAO {
         }
     }
     
-    // parte mafe
     @Override
     public Sala consultaPorId(int idSala) throws ClassNotFoundException, SQLException {
         Sala sala = null;
@@ -55,7 +51,6 @@ public class SalaDAO implements InterfaceSalaDAO {
         return sala;
     }
 
-    // parte mafe
     @Override
     public List<Sala> consultaTudo() throws ClassNotFoundException, SQLException {
         List<Sala> lista = new ArrayList<>();

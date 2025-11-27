@@ -12,13 +12,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *1. command - buscarTodasSalas
-            SalaDAO salaDAO = new SalaDAO(); isso vai para o command 
-            List<Sala> salas = salaDAO.consultaTudo();
-            return salas **exemplo**
- * @author uriel
- */
 public class BuscarTodasSalas implements InterfaceCommand{
 
 
@@ -44,7 +37,7 @@ public class BuscarTodasSalas implements InterfaceCommand{
         }
 
         request.setAttribute("msg", msg);
-        return "Salas.jsp"; // ou a JSP que você quiser
+        return "Salas.jsp"; 
     }
 } 
 

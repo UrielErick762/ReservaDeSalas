@@ -5,10 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-// parte mafe
 public class UsuarioDAO implements InterfaceUsuarioDAO {
 
-    // parte mafe
     @Override
     public Usuario buscarPorEmailESenha(String email, String senha) throws Exception {
         Connection con = Conexao.getConexaoMySQL();
@@ -34,7 +32,6 @@ public class UsuarioDAO implements InterfaceUsuarioDAO {
         return null;
     }
     
-    // parte mafe
     @Override
     public Usuario consultar(int idUsuario) throws Exception{
         Connection con = Conexao.getConexaoMySQL();

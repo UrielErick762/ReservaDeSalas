@@ -13,7 +13,6 @@
  */
 package Entity;
 
-// parte mafe
 public class SalaLaboratorio extends Sala{
     public SalaLaboratorio(){
         super();

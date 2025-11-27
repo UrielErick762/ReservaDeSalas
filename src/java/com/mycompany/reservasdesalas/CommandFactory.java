@@ -30,12 +30,12 @@ public class CommandFactory {
 
         if (supplier == null) return null; 
 
-        InterfaceCommand novoDecorator = supplier.get();
+        InterfaceCommand command = supplier.get();
 
-        novoDecorator = new CadastrarReservaDecorator(novoDecorator);
+        if ("cadastrarReserva".equals(actionName)) {
+             command = new CadastrarReservaDecorator(command);
+        }
         
-
-        return novoDecorator;
+        return command;
     }
 }
-

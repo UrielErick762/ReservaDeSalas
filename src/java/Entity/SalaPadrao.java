@@ -14,7 +14,6 @@
  */
 package Entity;
 
-// parte mafe
 public class SalaPadrao extends Sala{
     public SalaPadrao(){
         super();

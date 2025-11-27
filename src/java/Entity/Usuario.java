@@ -62,7 +62,6 @@ public class Usuario implements Serializable {
     public static class UsuarioBuilder{
     private Usuario usu = new Usuario();
     
-    // parte mafe
     public UsuarioBuilder comIdUsuario (int idUsuario){
          this.usu.idUsuario = idUsuario;
          return this;

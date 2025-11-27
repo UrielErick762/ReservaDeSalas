@@ -19,10 +19,6 @@ public class LoginAction implements InterfaceCommand {
         if (usuario != null) {
             request.getSession().setAttribute("usuarioLogado", usuario);
             
-            //MUDANÇAS MAFE
-            // BOAS PRÁTICAS MVC (Padrão PRG):
-            // Não chame o JSP direto ("view/Salas.jsp").
-            // Redirecione para a Action que prepara os dados da tela.
             return "redirect:frontcontrollerServlet?action=verificarDisponibilidadeSala"; 
             
         } else {

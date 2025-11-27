@@ -1,9 +1,7 @@
 package Entity;
 
-// parte mafe
 import java.lang.reflect.Constructor;
 
-// parte mafe
 public abstract class Sala {
 
     private int id;
@@ -12,8 +10,6 @@ public abstract class Sala {
     private String predio;
     private int andar;
     private int numero;
-    // parte mafe
-    // private String tipo; // Campo removido pois agora é definido via polimorfismo
     private boolean status;
     private String horarioDisp;
 
@@ -70,7 +66,6 @@ public abstract class Sala {
         this.numero = numero;
     }
 
-    // parte mafe
     // O método setTipo foi removido e getTipo agora é abstrato
     public abstract String getTipo();
 
@@ -90,7 +85,6 @@ public abstract class Sala {
         this.horarioDisp = horarioDisp;
     }
       
-    // parte mafe
     public static class SalaBuilder{
         private Sala salaInstance;
         
@@ -136,7 +130,6 @@ public abstract class Sala {
             return this;
         }
         
-        // parte mafe
         public SalaBuilder comHorarioDisp (String horarioDisp){
             salaInstance.setHorarioDisp(horarioDisp);
             return this;

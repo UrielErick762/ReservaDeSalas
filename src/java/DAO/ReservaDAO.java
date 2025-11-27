@@ -2,7 +2,6 @@ package DAO;
 
 import Entity.Reserva;
 import Entity.Sala;
-// Parte Mafe - Imports das implementações concretas
 import Entity.SalaPadrao;
 import Entity.SalaLaboratorio; 
 import Entity.Usuario;
@@ -14,21 +13,18 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-// parte mafe
 public class ReservaDAO implements InterfaceReservaDAO {
 
     public static Connection getConexao() throws ClassNotFoundException, SQLException {
         return Conexao.getConexaoMySQL();
     }
 
-    // Parte Mafe - Factory Method para instanciar a classe correta (LSP)
     private Sala instanciaSalaPorTipo(String tipo) {
         if (tipo == null) return new SalaPadrao();
         if (tipo.equalsIgnoreCase("LAB")) return new SalaLaboratorio();
         return new SalaPadrao();
     }
 
-    // parte mafe
     @Override
     public void cadastro(Reserva res) throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
@@ -47,7 +43,6 @@ public class ReservaDAO implements InterfaceReservaDAO {
         con.close();
     }
     
-    // parte mafe
     @Override
     public void atualiza(Reserva res) throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
@@ -66,7 +61,6 @@ public class ReservaDAO implements InterfaceReservaDAO {
         con.close();
     }
 
-    // parte mafe
     @Override
     public void deleta(Reserva res) throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
@@ -78,13 +72,12 @@ public class ReservaDAO implements InterfaceReservaDAO {
         con.close();
     }
 
-    // parte mafe
     @Override
     public List<Reserva> reservasPorSalaData(int idSala, java.time.LocalDate data) throws ClassNotFoundException, SQLException {
         List<Reserva> reservas = new ArrayList<>();
         Connection con = getConexao();
         
-        // Parte Mafe - JOIN para pegar o tipo da sala
+        // JOIN para pegar o tipo da sala
         String sql = "SELECT r.*, s.tipo FROM Reserva r " +
                      "INNER JOIN Sala s ON r.idSala = s.idSala " +
                      "WHERE r.idSala = ? AND r.data = ?";
@@ -117,7 +110,6 @@ public class ReservaDAO implements InterfaceReservaDAO {
         return reservas;
     }
     
-    // parte mafe
     @Override
     public List<Reserva> reservasPorUsuario(int idUsuario) throws ClassNotFoundException, SQLException {
         List<Reserva> reservas = new ArrayList<>();
@@ -155,7 +147,6 @@ public class ReservaDAO implements InterfaceReservaDAO {
         return reservas;
     }
     
-    // parte mafe
     @Override
     public List<Reserva> consultarPorUsuario(int idUsuario) throws ClassNotFoundException, SQLException {
         List<Reserva> reservas = new ArrayList<>();
