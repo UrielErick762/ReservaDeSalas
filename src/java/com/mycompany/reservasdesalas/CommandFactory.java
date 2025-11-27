@@ -5,35 +5,37 @@ import com.mycompany.reservasdesalas.CommandSala.*;
 import com.mycompany.reservasdesalas.CommandUsuario.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class CommandFactory {
 
-    private static final Map<String, InterfaceCommand> commands = new HashMap<>();
+    private static final Map<String, Supplier<InterfaceCommand>> commands = new HashMap<>();
 
-    
     static {
-        
-        commands.put("Login", new LoginAction());
-        
-        commands.put("BuscarTodasSalas", new BuscarTodasSalas());
-        commands.put("verificarDisponibilidadeSala", new VerificarDisponibilidadeSala());
+        commands.put("Login", LoginAction::new);
 
-        commands.put("cadastrarReserva", new CadastrarReservaAction());
-        commands.put("atualizarReserva", new AtualizaReservaAction());
-        commands.put("deletarReserva", new DeletarReservaAction());
-        commands.put("consultarMinhasReservas", new ConsultarReservaAction());
+        commands.put("BuscarTodasSalas", BuscarTodasSalas::new);
+        commands.put("verificarDisponibilidadeSala", VerificarDisponibilidadeSala::new);
 
-        
-        commands.put("consultarSalas", new ConsultarSalaAction());
-        
-        
+        commands.put("cadastrarReserva", CadastrarReservaAction::new);
+        commands.put("atualizarReserva", AtualizaReservaAction::new);
+        commands.put("deletarReserva", DeletarReservaAction::new);
+        commands.put("consultarMinhasReservas", ConsultarReservaAction::new);
+
+        commands.put("consultarSalas", ConsultarSalaAction::new);
     }
 
-    
     public static InterfaceCommand create(String actionName) {
-        if (actionName == null || !commands.containsKey(actionName)) {
-            return null; 
-        }
-        return commands.get(actionName);
+        Supplier<InterfaceCommand> supplier = commands.get(actionName);
+
+        if (supplier == null) return null; 
+
+        InterfaceCommand novoDecorator = supplier.get();
+
+        novoDecorator = new CadastrarReservaDecorator(novoDecorator);
+        
+
+        return novoDecorator;
     }
 }
+

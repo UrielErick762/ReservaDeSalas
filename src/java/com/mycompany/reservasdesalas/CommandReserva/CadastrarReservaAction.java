@@ -16,10 +16,7 @@ import Entity.Reserva;
 import Entity.Sala;
 import Entity.Usuario;
 
-/**
- *
- * @author uriel
- */
+
 public class CadastrarReservaAction implements InterfaceCommand {
 
     @Override
