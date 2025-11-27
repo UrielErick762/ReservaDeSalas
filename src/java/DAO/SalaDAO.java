@@ -41,7 +41,6 @@ public class SalaDAO implements InterfaceSalaDAO {
         ps.setInt(1, idSala);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            // parte mafe
             sala = instanciaSalaPorTipo(rs.getString("tipo"));
             sala.setId(rs.getInt("idSala"));
             sala.setNome(rs.getString("nome"));
@@ -49,8 +48,6 @@ public class SalaDAO implements InterfaceSalaDAO {
             sala.setPredio(rs.getString("predio"));
             sala.setAndar(rs.getInt("andar"));
             sala.setNumero(rs.getInt("numero"));
-            // parte mafe
-            // sala.setTipo(rs.getString("tipo")); // Removido pois é read-only via classe
             sala.setStatus(rs.getBoolean("status"));
             sala.setHorarioDisp(rs.getString("horarioDisp"));
         }
@@ -67,7 +64,6 @@ public class SalaDAO implements InterfaceSalaDAO {
         ResultSet rs = comando.executeQuery();
 
         while (rs.next()) {
-            // parte mafe
             Sala sala = instanciaSalaPorTipo(rs.getString("tipo"));
             sala.setId(rs.getInt("idSala"));
             sala.setNome(rs.getString("nome"));
@@ -75,8 +71,6 @@ public class SalaDAO implements InterfaceSalaDAO {
             sala.setPredio(rs.getString("predio"));
             sala.setAndar(rs.getInt("andar"));
             sala.setNumero(rs.getInt("numero"));
-            // parte mafe
-            // sala.setTipo(rs.getString("tipo")); // Removido
             sala.setStatus(rs.getBoolean("status"));
             sala.setHorarioDisp(rs.getString("horarioDisp"));
             lista.add(sala);

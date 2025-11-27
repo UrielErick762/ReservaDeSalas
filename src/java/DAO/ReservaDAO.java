@@ -2,8 +2,9 @@ package DAO;
 
 import Entity.Reserva;
 import Entity.Sala;
-// Parte Mafe - Import da classe concreta para resolver o problema de instanciar classe abstrata
+// Parte Mafe - Imports das implementações concretas
 import Entity.SalaPadrao;
+import Entity.SalaLaboratorio; 
 import Entity.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +19,13 @@ public class ReservaDAO implements InterfaceReservaDAO {
 
     public static Connection getConexao() throws ClassNotFoundException, SQLException {
         return Conexao.getConexaoMySQL();
+    }
+
+    // Parte Mafe - Factory Method para instanciar a classe correta (LSP)
+    private Sala instanciaSalaPorTipo(String tipo) {
+        if (tipo == null) return new SalaPadrao();
+        if (tipo.equalsIgnoreCase("LAB")) return new SalaLaboratorio();
+        return new SalaPadrao();
     }
 
     // parte mafe
@@ -75,9 +83,13 @@ public class ReservaDAO implements InterfaceReservaDAO {
     public List<Reserva> reservasPorSalaData(int idSala, java.time.LocalDate data) throws ClassNotFoundException, SQLException {
         List<Reserva> reservas = new ArrayList<>();
         Connection con = getConexao();
-        PreparedStatement ps = con.prepareStatement(
-            "SELECT * FROM Reserva WHERE idSala = ? AND data = ?"
-        );
+        
+        // Parte Mafe - JOIN para pegar o tipo da sala
+        String sql = "SELECT r.*, s.tipo FROM Reserva r " +
+                     "INNER JOIN Sala s ON r.idSala = s.idSala " +
+                     "WHERE r.idSala = ? AND r.data = ?";
+                     
+        PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, idSala);
         ps.setDate(2, java.sql.Date.valueOf(data));
         ResultSet rs = ps.executeQuery();
@@ -86,14 +98,12 @@ public class ReservaDAO implements InterfaceReservaDAO {
             Reserva r = new Reserva();
             r.setIdReserva(rs.getInt("idReserva"));
             
-            // Parte Mafe - Uso de SalaPadrao para evitar erro de classe abstrata
-            Sala sala = new SalaPadrao();
+            Sala sala = instanciaSalaPorTipo(rs.getString("tipo"));
             sala.setId(rs.getInt("idSala"));
             r.setIdSala(sala);
             
             Usuario usu = new Usuario();
             usu.setIdUsuario(rs.getInt("idUsuario"));
-            // Parte Mafe - Correção: atribuindo usuário corretamente
             r.setIdUsuario(usu);
             
             r.setData(rs.getDate("data").toLocalDate());
@@ -112,9 +122,12 @@ public class ReservaDAO implements InterfaceReservaDAO {
     public List<Reserva> reservasPorUsuario(int idUsuario) throws ClassNotFoundException, SQLException {
         List<Reserva> reservas = new ArrayList<>();
         Connection con = getConexao();
-        PreparedStatement ps = con.prepareStatement(
-            "SELECT * FROM Reserva WHERE idUsuario = ? ORDER BY data, horaInicio"
-        );
+        
+        String sql = "SELECT r.*, s.tipo FROM Reserva r " +
+                     "INNER JOIN Sala s ON r.idSala = s.idSala " +
+                     "WHERE r.idUsuario = ? ORDER BY r.data, r.horaInicio";
+                     
+        PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, idUsuario);
         ResultSet rs = ps.executeQuery();
 
@@ -122,8 +135,7 @@ public class ReservaDAO implements InterfaceReservaDAO {
             Reserva r = new Reserva();
             r.setIdReserva(rs.getInt("idReserva"));
             
-            // Parte Mafe - Uso de SalaPadrao
-            Sala sala = new SalaPadrao();
+            Sala sala = instanciaSalaPorTipo(rs.getString("tipo"));
             sala.setId(rs.getInt("idSala"));
             r.setIdSala(sala);
             
@@ -149,7 +161,10 @@ public class ReservaDAO implements InterfaceReservaDAO {
         List<Reserva> reservas = new ArrayList<>();
         Connection con = getConexao();
 
-        String sql = "SELECT * FROM Reserva WHERE idUsuario = ?";
+        String sql = "SELECT r.*, s.tipo FROM Reserva r " +
+                     "INNER JOIN Sala s ON r.idSala = s.idSala " +
+                     "WHERE r.idUsuario = ?";
+                     
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, idUsuario);
 
@@ -158,8 +173,7 @@ public class ReservaDAO implements InterfaceReservaDAO {
             Reserva r = new Reserva();
             r.setIdReserva(rs.getInt("idReserva"));
             
-            // Parte Mafe - Correção do erro "Sala is abstract"
-            Sala sala = new SalaPadrao(); 
+            Sala sala = instanciaSalaPorTipo(rs.getString("tipo")); 
             sala.setId(rs.getInt("idSala"));
             r.setIdSala(sala);
             
